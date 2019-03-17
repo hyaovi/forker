@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import { fecthResults, setSearchedItem } from '../actions/searchActions';
+import React, { Component } from "react";
+import {
+  fecthResults,
+  setSearchedItem,
+  resetResults
+} from "../actions/searchActions";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   Alert,
   Row,
@@ -11,12 +15,12 @@ import {
   Input,
   Col,
   Button
-} from 'reactstrap';
+} from "reactstrap";
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchItem: ''
+      searchItem: ""
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -26,6 +30,9 @@ class SearchBar extends Component {
   };
   onSubmitHandler(event) {
     event.preventDefault();
+    if (this.props.search.searchedItem !== this.state.searchItem) {
+      this.props.resetResults();
+    }
     this.props.fecthResults(
       this.state.searchItem,
       this.props.search.perPage,
@@ -34,7 +41,6 @@ class SearchBar extends Component {
   }
   render() {
     const { error } = this.props;
-    console.log(error.message);
     const { searchItem } = this.state;
     return (
       <div>
@@ -81,5 +87,5 @@ const mapStateToPtops = state => ({
 
 export default connect(
   mapStateToPtops,
-  { fecthResults, setSearchedItem }
+  { fecthResults, setSearchedItem, resetResults }
 )(SearchBar);

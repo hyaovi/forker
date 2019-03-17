@@ -3,10 +3,11 @@ import {
   SET_SEARCHED_ITEM,
   SET_PAGES,
   SET_LOADING,
-  SET_RESULTS_TOTAL_PAGES
-} from '../actions/types';
+  SET_RESULTS_TOTAL_PAGES,
+  RESET_RESULTS
+} from "../actions/types";
 const initialState = {
-  searchedItem: '',
+  searchedItem: "",
   perPage: 30,
   page: 1,
   totalPages: null,
@@ -37,6 +38,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         totalPages: Math.round(action.payload / state.perPage)
+      };
+    case RESET_RESULTS:
+      return {
+        ...state,
+        results: []
       };
     default:
       return state;

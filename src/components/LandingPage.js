@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Loading from './Loading';
-import TableList from './TableList';
-import { fecthResults } from '../actions/searchActions';
-import { Container, Button } from 'reactstrap';
-import SearchBar from './SearchBar';
-import Pagination from './Pagination';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Loading from "./Loading";
+import TableList from "./TableList";
+import { fecthResults } from "../actions/searchActions";
+import { Container, Button } from "reactstrap";
+import SearchBar from "./SearchBar";
+import Pagination from "./Pagination";
 
 class LandingPage extends Component {
   render() {
