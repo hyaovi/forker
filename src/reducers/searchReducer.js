@@ -2,12 +2,14 @@ import {
   SET_RESULTS,
   SET_SEARCHED_ITEM,
   SET_PAGES,
-  SET_LOADING
+  SET_LOADING,
+  SET_RESULTS_TOTAL_PAGES
 } from '../actions/types';
 const initialState = {
   searchedItem: '',
-  perPage: 10,
-  page: 0,
+  perPage: 30,
+  page: 1,
+  totalPages: null,
   results: [],
   loading: false
 };
@@ -19,7 +21,7 @@ export default function(state = initialState, action) {
         searchedItem: action.payload
       };
     case SET_LOADING:
-      return { ...state, loading: true };
+      return { ...state, loading: action.payload };
     case SET_PAGES:
       return {
         ...state,
@@ -31,7 +33,12 @@ export default function(state = initialState, action) {
         results: [...state.results, ...action.payload],
         loading: false
       };
+    case SET_RESULTS_TOTAL_PAGES:
+      return {
+        ...state,
+        totalPages: Math.round(action.payload / state.perPage)
+      };
     default:
-      return { ...state };
+      return state;
   }
 }

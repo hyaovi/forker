@@ -1,12 +1,9 @@
 import React from 'react';
-import { Table, Container, Button } from 'reactstrap';
+import { Table, Container } from 'reactstrap';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 import { fecthResults } from '../actions/searchActions';
-// import Loading from './Loading';
 
 const TableList = props => {
-  console.log(props.search.searchItem);
   return (
     <Container className="my-3">
       <div className=" mb-3">
@@ -28,7 +25,11 @@ const TableList = props => {
                 <td>{item.stargazers_count}</td>
                 <td>{item.forks_count}</td>
                 <td>
-                  <a href={item.clone_url} blank>
+                  <a
+                    href={item.clone_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     clone
                   </a>
                 </td>
