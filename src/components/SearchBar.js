@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
-  fecthResults,
+  fecthNewResults,
   setSearchedItem,
   resetResults
-} from "../actions/searchActions";
+} from '../actions/searchActions';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
   Alert,
   Row,
@@ -15,12 +15,12 @@ import {
   Input,
   Col,
   Button
-} from "reactstrap";
+} from 'reactstrap';
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchItem: ""
+      searchItem: ''
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -31,13 +31,23 @@ class SearchBar extends Component {
   onSubmitHandler(event) {
     event.preventDefault();
     if (this.props.search.searchedItem !== this.state.searchItem) {
-      this.props.resetResults();
+      this.props.fecthNewResults(
+        this.state.searchItem,
+        this.props.search.perPage
+      );
     }
-    this.props.fecthResults(
-      this.state.searchItem,
-      this.props.search.perPage,
-      this.props.page
-    );
+  }
+  componentDidMount() {
+    if (this.props.params !== undefined) {
+      // console.log(this.props.params.user);
+      const item = `${this.props.params.user}/${this.props.params.rep}`;
+      console.log(typeof item);
+      this.setState({ searchItem: item.toString() });
+      this.props.fecthNewResults(
+        this.state.searchItem,
+        this.props.search.perPage
+      );
+    }
   }
   render() {
     const { error } = this.props;
@@ -54,16 +64,16 @@ class SearchBar extends Component {
                 <Col md={8}>
                   <FormGroup className="mb-3">
                     <Input
-                      bsSize="lg"
                       type="text"
                       name="searchItem"
                       value={searchItem}
                       onChange={this.onChangeHandler}
+                      placeholder="eg: netlify/cli"
                     />
                   </FormGroup>
                 </Col>
                 <Col md={4}>
-                  <Button block size="lg">
+                  <Button block color="info">
                     Submit
                   </Button>
                 </Col>
@@ -87,5 +97,5 @@ const mapStateToPtops = state => ({
 
 export default connect(
   mapStateToPtops,
-  { fecthResults, setSearchedItem, resetResults }
+  { setSearchedItem, fecthNewResults, resetResults }
 )(SearchBar);

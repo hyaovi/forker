@@ -1,68 +1,109 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   SET_SEARCHED_ITEM,
+  SET_FIRST_RESULTS,
   SET_RESULTS,
-  GET_ERROR,
-  SET_PAGES,
-  SET_PER_PAGE,
+  SET_ERROR,
+  SET_CURRENT_PAGE,
   SET_LOADING,
-  SET_RESULTS_TOTAL_PAGES,
+  SET_TOTAL_PAGES,
   RESET_ERROR,
   RESET_RESULTS
-} from "./types";
+} from './types';
+
+export const fecthNewResults = (
+  searchedItem,
+  perPage,
+  page = 1
+) => dispatch => {
+  const [username, repository] = searchedItem.split('/');
+  dispatch(setLoading(true));
+  dispatch(resetError());
+  axios
+    .all([
+      axios.get(`https://api.github.com/repos/${username}/${repository}`),
+      axios.get(
+        `repos/${username}/${repository}/forks?per_page=${perPage}&page=${page}`
+      )
+    ])
+    .then(
+      axios.spread(function(reposInfos, reposForks) {
+        dispatch(setTotalPages(reposInfos.data.forks_count));
+        dispatch({
+          type: SET_FIRST_RESULTS,
+          payload: {
+            page: 1,
+            results: reposForks.data
+          }
+        });
+        dispatch(setLoading(false));
+      })
+    )
+    .catch(error => {
+      dispatch(getError(error.response.data));
+      dispatch(setLoading(false));
+    });
+  dispatch(setSearchedItem(searchedItem));
+};
 
 export const resetResults = () => dispatch => {
   dispatch({ type: RESET_RESULTS });
 };
-export const fecthResults = (searchedItem, perPage, page) => dispatch => {
-  //set search item
-  dispatch({ type: SET_SEARCHED_ITEM, payload: searchedItem });
-  //parse searching item
-  const [username, repository] = searchedItem.split("/");
-  //set loading compponent
-  dispatch({ type: SET_LOADING, payload: true });
-  // reset error
-  dispatch({ type: RESET_ERROR });
-  axios
-    .get(
-      `/repos/${username}/${repository}/forks?per_page=${perPage}&page=${page}`
-    )
-    .then(res => {
-      dispatch({
-        type: SET_RESULTS,
-        payload: res.data
-      });
-      dispatch({ type: SET_PAGES });
-    })
-    .then(
-      axios
-        .get(`/repos/${username}/${repository}`)
-        .then(res => {
-          dispatch({
-            type: SET_RESULTS_TOTAL_PAGES,
-            payload: res.data.forks_count
-          });
-        })
-        .catch(error => {
-          dispatch({ type: SET_LOADING, payload: false });
-          dispatch({ type: GET_ERROR, payload: error.response.data });
-        })
-    )
-    .catch(error => {
-      dispatch({ type: SET_LOADING, payload: false });
-      dispatch({ type: SET_RESULTS, payload: null });
-    });
-};
 
-export const setPerPage = () => dispatch => {
-  dispatch({ type: SET_PER_PAGE });
-};
 export const setLocal = results => {
   console.log(results);
-  localStorage.setItem("results", JSON.stringify(results));
-  console.log(JSON.parse(localStorage.getItem("results")));
+  localStorage.setItem('results', JSON.stringify(results));
+  console.log(JSON.parse(localStorage.getItem('results')));
 };
 
-export const setSearchedItem = searchedItem => dispatch => {
-  return dispatch({ type: SET_SEARCHED_ITEM, payload: searchedItem });
+export const setSearchedItem = searchedItem => {
+  return { type: SET_SEARCHED_ITEM, payload: searchedItem };
+};
+export const setCurrentPage = page => dispatch => {
+  dispatch({ type: SET_CURRENT_PAGE, payload: page });
+};
+
+export const setLoading = loading => {
+  return { type: SET_LOADING, payload: loading };
+};
+export const setTotalPages = totalForks => {
+  return { type: SET_TOTAL_PAGES, payload: totalForks };
+};
+export const getError = error => {
+  return { type: SET_ERROR, payload: error };
+};
+
+export const resetError = () => {
+  return { type: RESET_ERROR };
+};
+
+export const fecthResults = (
+  searchedItem,
+  perPage,
+  totalPages,
+  page
+) => dispatch => {
+  const [username, repository] = searchedItem.split('/');
+  if (page <= totalPages) {
+    dispatch(setLoading(true));
+    axios
+      .get(
+        `repos/${username}/${repository}/forks?per_page=${perPage}&page=${page}`
+      )
+      .then(res => {
+        dispatch({
+          type: SET_RESULTS,
+          payload: {
+            page: page,
+            results: res.data
+          }
+        });
+        dispatch(setLoading(false));
+        dispatch({ type: SET_CURRENT_PAGE, payload: page });
+      })
+      .catch(error => {
+        dispatch(getError(error.response.data));
+        dispatch(setLoading(false));
+      });
+  }
 };

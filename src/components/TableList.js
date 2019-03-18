@@ -1,9 +1,15 @@
 import React from 'react';
 import { Table, Container } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fecthResults } from '../actions/searchActions';
 
 const TableList = props => {
+  let currentResults;
+  props.search.results.map(result => {
+    if (result.page === props.search.currentPage) {
+      currentResults = result;
+    }
+  });
+
   return (
     <Container className="my-3">
       <div className=" mb-3">
@@ -18,7 +24,7 @@ const TableList = props => {
             </tr>
           </thead>
           <tbody>
-            {props.search.results.map(item => (
+            {currentResults.results.map(item => (
               <tr key={item.id}>
                 <th scope="row">{item.name}</th>
                 <td>{item.owner.login}</td>
@@ -47,5 +53,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { fecthResults }
+  null
 )(TableList);
