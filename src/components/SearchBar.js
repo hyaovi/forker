@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import {
-  fecthNewResults,
-  setSearchedItem,
-  resetResults
-} from '../actions/searchActions';
+import { withRouter } from 'react-router-dom';
+import Loading from './Loading';
+import { fecthNewResults, setSearchedItem } from '../actions/searchActions';
 
 import { connect } from 'react-redux';
 import {
   Alert,
   Row,
+  InputGroup,
+  InputGroupAddon,
   Form,
-  FormGroup,
   Label,
   Input,
   Col,
@@ -30,7 +29,10 @@ class SearchBar extends Component {
   };
   onSubmitHandler(event) {
     event.preventDefault();
-    if (this.props.search.searchedItem !== this.state.searchItem) {
+    if (
+      (this.props.search.searchedItem !== this.state.searchItem) !==
+      this.props.search.searchedItem
+    ) {
       this.props.fecthNewResults(
         this.state.searchItem,
         this.props.search.perPage
@@ -38,31 +40,33 @@ class SearchBar extends Component {
     }
   }
   componentDidMount() {
-    if (this.props.params !== undefined) {
-      // console.log(this.props.params.user);
-      const item = `${this.props.params.user}/${this.props.params.rep}`;
-      console.log(typeof item);
-      this.setState({ searchItem: item.toString() });
-      this.props.fecthNewResults(
-        this.state.searchItem,
-        this.props.search.perPage
+    if (this.props.location.search) {
+      this.setState(
+        { searchItem: this.props.location.search.split('=')[1] },
+        //NEED TO INSTALL QUERY PARSER
+        () =>
+          this.props.fecthNewResults(
+            this.state.searchItem,
+            this.props.search.perPage
+          )
       );
     }
   }
   render() {
+    const { loading } = this.props.search;
     const { error } = this.props;
     const { searchItem } = this.state;
     return (
-      <div>
+      <div className={this.props.className}>
         <Row>
-          <Col md="6" className="m-auto">
-            <h1>Forkers </h1>
+          <Col md="6" className="mx-auto text-center">
             <Form onSubmit={this.onSubmitHandler}>
-              <Label>enter github username/repo eg: netlify/cli</Label>
-
+              <Label>
+                Enter github username/repo eg: <code>netlify/cli</code>
+              </Label>
               <Row form>
-                <Col md={8}>
-                  <FormGroup className="mb-3">
+                <Col md={10} className="mx-auto text-center">
+                  <InputGroup className="mb-3">
                     <Input
                       type="text"
                       name="searchItem"
@@ -70,12 +74,12 @@ class SearchBar extends Component {
                       onChange={this.onChangeHandler}
                       placeholder="eg: netlify/cli"
                     />
-                  </FormGroup>
-                </Col>
-                <Col md={4}>
-                  <Button block color="info">
-                    Submit
-                  </Button>
+                    <InputGroupAddon addonType="append">
+                      <Button block color="info">
+                        Search
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
                 </Col>
               </Row>
             </Form>
@@ -86,6 +90,7 @@ class SearchBar extends Component {
             )}
           </Col>
         </Row>
+        {loading && <Loading />}
       </div>
     );
   }
@@ -95,7 +100,9 @@ const mapStateToPtops = state => ({
   error: state.error
 });
 
-export default connect(
-  mapStateToPtops,
-  { setSearchedItem, fecthNewResults, resetResults }
-)(SearchBar);
+export default withRouter(
+  connect(
+    mapStateToPtops,
+    { setSearchedItem, fecthNewResults }
+  )(SearchBar)
+);

@@ -1,9 +1,6 @@
 export const SET_SEARCHED_ITEM = 'SET_SEARCHED_ITEM';
 export const SET_ERROR = 'SET_ERROR';
-export const RESET_ERROR = 'RESET_ERROR';
 export const SET_FIRST_RESULTS = 'SET_FIRST_RESULTS';
 export const SET_RESULTS = 'SET_RESULTS';
-export const RESET_RESULTS = 'RESET_RESULTS';
-export const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';

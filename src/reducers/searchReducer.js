@@ -3,13 +3,11 @@ import {
   SET_SEARCHED_ITEM,
   SET_CURRENT_PAGE,
   SET_LOADING,
-  SET_TOTAL_PAGES,
-  RESET_RESULTS,
   SET_FIRST_RESULTS
 } from '../actions/types';
 const initialState = {
   searchedItem: '',
-  perPage: 20,
+  perPage: 30,
   currentPage: 1,
   totalPages: null,
   results: [],
@@ -26,7 +24,12 @@ export default function(state = initialState, action) {
       return { ...state, loading: action.payload };
 
     case SET_FIRST_RESULTS:
-      return { ...state, results: [action.payload] };
+      return {
+        ...state,
+        results: [action.payload.results],
+        totalPages: Math.round(action.payload.totalPages / state.perPage),
+        loading: false
+      };
     case SET_CURRENT_PAGE:
       return {
         ...state,
@@ -38,16 +41,7 @@ export default function(state = initialState, action) {
         results: [...state.results, action.payload],
         loading: false
       };
-    case SET_TOTAL_PAGES:
-      return {
-        ...state,
-        totalPages: Math.round(action.payload / state.perPage)
-      };
-    case RESET_RESULTS:
-      return {
-        ...state,
-        results: []
-      };
+
     default:
       return state;
   }

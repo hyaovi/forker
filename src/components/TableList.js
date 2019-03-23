@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 
 const TableList = props => {
   let currentResults;
-  props.search.results.map(result => {
-    if (result.page === props.search.currentPage) {
-      currentResults = result;
-    }
-  });
-
+  currentResults = props.search.results.filter(
+    result => result.page === props.search.currentPage
+  )[0];
+  // console.log(currentResults);
   return (
     <Container className="my-3">
       <div className=" mb-3">

@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Loading from './Loading';
-import TableList from './TableList';
+import { Route, Switch, Link } from 'react-router-dom';
+
 import { Container } from 'reactstrap';
 import SearchBar from './SearchBar';
-import Pagination from './Pagination';
+import ResultsPage from './ResultsPage';
 
 class LandingPage extends Component {
   render() {
-    const { results, loading } = this.props.search;
-    // console.log(this.props.match.params);
-
     return (
-      <Container className="mt-3 text-center">
-        <div>
-          <SearchBar params={this.props.match.params} />
-          {!loading && results[0] && !this.props.error.message && (
-            <div>
-              <TableList results={results} />
-
-              <Pagination />
-            </div>
-          )}
-
-          {loading && <Loading />}
-        </div>
+      <Container className="text-center">
+        <h1 className="my-3 text-center">
+          <Link className=" text-info" to="/">
+            Forkers
+          </Link>{' '}
+        </h1>
+        <SearchBar />
+        <Switch>
+          <Route path="/" component={ResultsPage} />
+          <Route path="/search&page=1" component={ResultsPage} />
+        </Switch>
       </Container>
     );
   }
