@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Container } from 'reactstrap';
+import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
 
 const TableList = props => {
