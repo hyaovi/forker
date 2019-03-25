@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fecthResults, setCurrentPage } from '../actions/searchActions';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Col } from 'reactstrap';
 
 function Paginate(props) {
   const {
@@ -32,18 +32,25 @@ function Paginate(props) {
     }
   };
   return (
-    <div className="d-flex justify-content-center mb-3">
-      <Pagination aria-label="Page navigation example" className="m-auto">
-        <PaginationItem onClick={previousPage} disabled={currentPage === 1}>
-          <PaginationLink previous href="#" />
-        </PaginationItem>
-        <PaginationItem
-          disabled={currentPage === totalPages}
-          onClick={nextPage}
-        >
-          <PaginationLink next href="#" />
-        </PaginationItem>
-      </Pagination>
+    <div className="row  justify-content-center align-items-center mb-3">
+      <Col md={2}>
+        <p color="light">
+          {currentPage} of {totalPages} pages
+        </p>
+      </Col>
+      <Col>
+        <Pagination aria-label="Page navigation example" className="m-auto">
+          <PaginationItem onClick={previousPage} disabled={currentPage === 1}>
+            <PaginationLink previous href="." />
+          </PaginationItem>
+          <PaginationItem
+            disabled={currentPage === totalPages}
+            onClick={nextPage}
+          >
+            <PaginationLink next href="." />
+          </PaginationItem>
+        </Pagination>
+      </Col>
     </div>
   );
 }

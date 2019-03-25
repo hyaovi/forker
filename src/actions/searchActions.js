@@ -1,4 +1,5 @@
 import axios from 'axios';
+import searchApi from '../utils/searchApi';
 import {
   SET_SEARCHED_ITEM,
   SET_FIRST_RESULTS,
@@ -18,9 +19,9 @@ export const fecthNewResults = (
   dispatch(setError({}));
   axios
     .all([
-      axios.get(`https://api.github.com/repos/${username}/${repository}`),
+      searchApi.get(`repos/${username}/${repository}`),
       axios.get(
-        `https://api.github.com/repos/${username}/${repository}/forks?per_page=${perPage}&page=${page}`
+        `repos/${username}/${repository}/forks?per_page=${perPage}&page=${page}`
       )
     ])
     .then(

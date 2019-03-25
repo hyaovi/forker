@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { Container } from 'reactstrap';
 import SearchBar from './SearchBar';
@@ -16,10 +16,13 @@ class LandingPage extends Component {
           </Link>{' '}
         </h1>
         <SearchBar />
-        <Switch>
-          <Route path="/" component={ResultsPage} />
-          <Route path="/search&page=1" component={ResultsPage} />
-        </Switch>
+
+        <Router>
+          <Fragment>
+            <Route path="/" exact component={ResultsPage} />
+            <Route path="/search&page=1" component={ResultsPage} />
+          </Fragment>
+        </Router>
       </Container>
     );
   }

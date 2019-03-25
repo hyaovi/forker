@@ -13,7 +13,6 @@ class ResultsPage extends Component {
         {!loading && results[0] && !this.props.error.message && (
           <div>
             <TableList results={results} />
-
             <Pagination />
           </div>
         )}

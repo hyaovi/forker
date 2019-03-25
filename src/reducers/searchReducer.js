@@ -9,6 +9,7 @@ const initialState = {
   searchedItem: '',
   perPage: 30,
   currentPage: 1,
+  totalForks: 0,
   totalPages: null,
   results: [],
   loading: false
@@ -27,6 +28,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         results: [action.payload.results],
+        totalForks: action.payload.totalPages,
         totalPages: Math.round(action.payload.totalPages / state.perPage),
         loading: false
       };

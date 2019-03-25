@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Loading from './Loading';
 import { fecthNewResults, setSearchedItem } from '../actions/searchActions';
-
 import { connect } from 'react-redux';
+import queryString from 'query-string';
+
 import {
   Alert,
   Row,
@@ -29,10 +30,7 @@ class SearchBar extends Component {
   };
   onSubmitHandler(event) {
     event.preventDefault();
-    if (
-      (this.props.search.searchedItem !== this.state.searchItem) !==
-      this.props.search.searchedItem
-    ) {
+    if (this.props.search.searchedItem !== this.state.searchItem) {
       this.props.fecthNewResults(
         this.state.searchItem,
         this.props.search.perPage
@@ -41,14 +39,13 @@ class SearchBar extends Component {
   }
   componentDidMount() {
     if (this.props.location.search) {
-      this.setState(
-        { searchItem: this.props.location.search.split('=')[1] },
-        //NEED TO INSTALL QUERY PARSER
-        () =>
-          this.props.fecthNewResults(
-            this.state.searchItem,
-            this.props.search.perPage
-          )
+      const data = queryString.parse(this.props.location.search);
+      console.log(data.repository);
+      this.setState({ searchItem: data.repository }, () =>
+        this.props.fecthNewResults(
+          this.state.searchItem,
+          this.props.search.perPage
+        )
       );
     }
   }
@@ -66,7 +63,7 @@ class SearchBar extends Component {
               </Label>
               <Row form>
                 <Col md={10} className="mx-auto text-center">
-                  <InputGroup className="mb-3">
+                  <InputGroup className="mb-3 shadow-sm ">
                     <Input
                       type="text"
                       name="searchItem"
