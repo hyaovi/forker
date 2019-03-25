@@ -40,7 +40,7 @@ class SearchBar extends Component {
   componentDidMount() {
     if (this.props.location.search) {
       const data = queryString.parse(this.props.location.search);
-      console.log(data.repository);
+
       this.setState({ searchItem: data.repository }, () =>
         this.props.fecthNewResults(
           this.state.searchItem,
