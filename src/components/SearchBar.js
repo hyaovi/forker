@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Loading from './Loading';
-import { fecthNewResults, setSearchedItem } from '../actions/searchActions';
+import { fecthNewResults } from '../actions/searchActions';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-
+import PropTypes from 'prop-types';
 import {
   Alert,
   Row,
@@ -92,6 +92,10 @@ class SearchBar extends Component {
     );
   }
 }
+SearchBar.propTypes = {
+  error: PropTypes.object,
+  fecthNewResults: PropTypes.func.isRequired
+};
 const mapStateToPtops = state => ({
   search: state.search,
   error: state.error
@@ -100,6 +104,6 @@ const mapStateToPtops = state => ({
 export default withRouter(
   connect(
     mapStateToPtops,
-    { setSearchedItem, fecthNewResults }
+    { fecthNewResults }
   )(SearchBar)
 );
