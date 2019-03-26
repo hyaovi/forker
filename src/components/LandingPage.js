@@ -27,11 +27,5 @@ class LandingPage extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  search: state.search,
-  error: state.error
-});
-export default connect(
-  mapStateToProps,
-  null
-)(LandingPage);
+
+export default connect(null)(LandingPage);

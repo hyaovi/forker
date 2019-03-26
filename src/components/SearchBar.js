@@ -59,7 +59,7 @@ class SearchBar extends Component {
           <Col md="6" className="mx-auto text-center">
             <Form onSubmit={this.onSubmitHandler}>
               <Label>
-                Enter github username/repo eg: <code>netlify/cli</code>
+                Enter github username/repo eg: <code>facebook/react</code>
               </Label>
               <Row form>
                 <Col md={10} className="mx-auto text-center">
@@ -69,7 +69,7 @@ class SearchBar extends Component {
                       name="searchItem"
                       value={searchItem}
                       onChange={this.onChangeHandler}
-                      placeholder="eg: netlify/cli"
+                      placeholder="eg: facebook/react"
                     />
                     <InputGroupAddon addonType="append">
                       <Button block color="info">
@@ -93,7 +93,8 @@ class SearchBar extends Component {
   }
 }
 SearchBar.propTypes = {
-  error: PropTypes.object,
+  error: PropTypes.object.isRequired,
+  search: PropTypes.object.isRequired,
   fecthNewResults: PropTypes.func.isRequired
 };
 const mapStateToPtops = state => ({

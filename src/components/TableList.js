@@ -1,12 +1,14 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
+import SearchBar from './SearchBar';
 const TableList = props => {
   let currentResults;
   currentResults = props.search.results.filter(
     result => result.page === props.search.currentPage
-  )[0];
+  )[0].results;
+  console.log(currentResults);
   return (
     <div className=" mb-3">
       <Table striped bordered hover responsive className="shadow-sm">
@@ -20,7 +22,7 @@ const TableList = props => {
           </tr>
         </thead>
         <tbody>
-          {currentResults.results.map(item => (
+          {currentResults.map(item => (
             <tr key={item.id}>
               <th scope="row">{item.name}</th>
               <td>{item.owner.login}</td>
@@ -41,6 +43,9 @@ const TableList = props => {
       </Table>
     </div>
   );
+};
+SearchBar.propTypes = {
+  search: PropTypes.object
 };
 const mapStateToProps = state => ({
   search: state.search

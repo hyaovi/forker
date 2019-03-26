@@ -67,10 +67,8 @@ export const fecthResults = (
 export const setSearchedItem = searchedItem => {
   return { type: SET_SEARCHED_ITEM, payload: searchedItem };
 };
-export const setCurrentPage = page => dispatch => {
+export const setCurrentPage = page => dispatch =>
   dispatch({ type: SET_CURRENT_PAGE, payload: page });
-};
-
 export const setLoading = loading => {
   return { type: SET_LOADING, payload: loading };
 };

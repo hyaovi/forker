@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TableList from './TableList';
 import { Container } from 'reactstrap';
-import Pagination from './Pagination';
+import Pagination from './Paginate';
 import { fecthNewResults, setSearchedItem } from '../actions/searchActions';
 class ResultsPage extends Component {
   render() {
